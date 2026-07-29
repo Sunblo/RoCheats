@@ -27,12 +27,9 @@
     min-height:100vh;
     -webkit-font-smoothing:antialiased;
     overflow-x:hidden;
-    /* Fade in/out transition for page switching */
-    opacity:0;
-    transition:opacity 0.4s ease;
   }
-  body.loaded{opacity:1}
-  body.fade-out{opacity:0}
+  /* Page transition fade out */
+  body.fade-out{opacity:0; transition:opacity 0.4s ease;}
   
   .font-display{font-family:'Space Grotesk',sans-serif;letter-spacing:-0.02em}
 
@@ -40,7 +37,6 @@
   #preloader{
     position:fixed;inset:0;background:#000;z-index:9999;
     display:flex;align-items:center;justify-content:center;
-    /* Fade out background while text swipes up */
     transition:opacity 0.6s ease, visibility 0.6s ease;
   }
   #preloader.done{
@@ -51,7 +47,6 @@
     font-family:'Space Grotesk',sans-serif;font-weight:700;
     font-size:clamp(32px,6vw,56px);letter-spacing:-0.04em;
     color:#fff;
-    /* Text swipes up when app loads */
     transition:transform 0.8s cubic-bezier(0.7, 0, 0.3, 1);
   }
   #preloader.done .pre-logo{
@@ -75,7 +70,11 @@
     padding:24px 5vw;display:flex;align-items:center;justify-content:space-between;
     background:rgba(10,10,12,0.6);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
     border-bottom:1px solid var(--border);
-    transition:padding 0.3s;
+    transition:padding 0.3s ease, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.2s; /* Added slide down delay */
+    transform:translateY(-100%); /* Hidden initially */
+  }
+  body.loaded nav{
+    transform:translateY(0); /* Tween down from top */
   }
   nav.scrolled{padding:16px 5vw}
   .nav-logo{
@@ -102,13 +101,23 @@
   .nav-cta:hover{background:#ff1640;transform:translateY(-1px)}
   .mobile-toggle{display:none;background:none;border:none;color:var(--fg);font-size:22px;cursor:pointer}
 
+  /* Main Content */
+  main{
+    position:relative;z-index:1;
+    opacity:0; /* Hidden initially */
+    transform:translateY(40px); /* Positioned lower initially */
+    transition:opacity 0.8s ease, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  body.loaded main{
+    opacity:1; /* Lose transparency */
+    transform:translateY(0); /* Slide up */
+  }
+
   /* Hero */
-  main{position:relative;z-index:1}
   .hero{
     min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;
     text-align:center;padding:100px 5vw 60px;
   }
-  
   .hero h1{
     font-family:'Space Grotesk',sans-serif;font-weight:700;
     font-size:clamp(48px,10vw,120px);line-height:0.95;letter-spacing:-0.05em;
@@ -195,7 +204,7 @@
   <button class="mobile-toggle"><i class="fas fa-bars"></i></button>
 </nav>
 
-<!-- Hero -->
+<!-- Hero & Content -->
 <main>
   <section class="hero">
     <h1 class="font-display"><span>Personalize your</span><br><span>Roblox experience.</span></h1>
@@ -230,11 +239,14 @@
 </main>
 
 <script>
-  // Preloader text swipe up
+  // Intro sequence
   window.addEventListener('load', () => {
     setTimeout(() => {
-      document.body.classList.add('loaded');
+      // 1. Trigger preloader swipe up
       document.getElementById('preloader').classList.add('done');
+      
+      // 2. Trigger main content slide up/fade in and nav tween down simultaneously
+      document.body.classList.add('loaded');
     }, 600); 
   });
 
@@ -243,7 +255,7 @@
     document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 30);
   });
 
-  // Page transition (fade out and in)
+  // Page transition (fade out)
   document.querySelectorAll('a').forEach(link => {
     const href = link.getAttribute('href');
     // Check if it's an internal HTML link
