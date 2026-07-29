@@ -114,21 +114,20 @@
     display: flex;
     flex-direction: column;
   }
+  
+  /* Updated Media Box to hold an image */
   .app-media {
     border-radius: 16px;
     overflow: hidden;
     height: 400px;
+    background: #111; /* Fallback color while image loads */
     display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    /* Replace with your image: background-image: url('YOUR_RAW_GITHUB_IMAGE_URL'); background-size: cover; background-position: center; */
-    background: linear-gradient(135deg, #5a1fff, #00e5ff);
   }
-  .app-media i {
-    font-size: 100px;
-    color: #fff;
-    opacity: 0.9;
+  .app-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Prevents image from stretching */
+    display: block;
   }
 
   .app-details {
@@ -274,6 +273,8 @@
     <li><a href="../scripts.html" class="nav-link">Scripts</a></li>
     <li><a href="../apps.html" class="nav-link active">Apps</a></li>
     <li><a href="../videos.html" class="nav-link">Videos</a></li>
+    <li><a href="../about.html" class="nav-link">About</a></li>
+    <li><a href="../contact.html" class="nav-link">Contact</a></li>
   </ul>
   <a href="#" class="nav-cta" onclick="event.preventDefault()">
     <i class="fab fa-discord"></i> <span>Join Discord</span>
@@ -284,27 +285,42 @@
 <!-- Content -->
 <main>
   <div class="breadcrumbs">
-    <a href="../apps.html">Apps</a> <i class="fas fa-chevron-right"></i> Test APP
+    <a href="../apps.html">Apps</a> <i class="fas fa-chevron-right"></i> RoStudio IDE
   </div>
 
   <div class="app-container">
     <!-- Left Column: Media & Details -->
     <div class="left-col">
+      <!-- Replace the src below with your direct image URL -->
       <div class="app-media">
-        <div class="script-media" style="background-image: url('https://raw.githubusercontent.com/Sunblo/RoCheats/refs/heads/main/Images/%5Bplaceholder%20image%5D.png'); background-size: cover; background-position: center;">
-      </div>
+        <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=2070&auto=format&fit=crop" alt="RoStudio IDE Preview">
       </div>
       
       <div class="app-details">
         <h2 class="section-title"><i class="fas fa-circle-info"></i> About this app</h2>
         <p class="desc-text">
-          [description]
+          RoStudio IDE is a standalone desktop application designed to supercharge your Roblox scripting workflow. Featuring a lightning-fast Luau parser, real-time error checking, and multi-file project management, it bridges the gap between basic executors and full game development environments.
         </p>
 
         <h2 class="section-title"><i class="fas fa-star"></i> Features</h2>
         <div class="features-grid">
           <div class="feature-item">
-            <i class="fas fa-check-circle"></i> does things
+            <i class="fas fa-check-circle"></i> Syntax Highlighting
+          </div>
+          <div class="feature-item">
+            <i class="fas fa-check-circle"></i> Auto-complete
+          </div>
+          <div class="feature-item">
+            <i class="fas fa-check-circle"></i> Multi-file Projects
+          </div>
+          <div class="feature-item">
+            <i class="fas fa-check-circle"></i> Cloud Sync
+          </div>
+          <div class="feature-item">
+            <i class="fas fa-check-circle"></i> One-Click Execute
+          </div>
+          <div class="feature-item">
+            <i class="fas fa-check-circle"></i> Dark Mode Native
           </div>
         </div>
       </div>
@@ -313,10 +329,9 @@
     <!-- Right Column: Action Panel -->
     <div class="action-panel">
       <span class="app-category">Desktop Application</span>
-      <h1 class="app-title">Test app</h1>
+      <h1 class="app-title">RoStudio IDE</h1>
       
       <div class="price-box">
-        <!-- You can change this to a price like <span>$</span>9.99 if it's paid -->
         <div class="price-main">Free</div>
       </div>
 
@@ -328,19 +343,19 @@
       <ul class="meta-list">
         <li class="meta-item">
           <span>File Size</span>
-          <span>idk</span>
+          <span>48 MB</span>
         </li>
         <li class="meta-item">
           <span>Version</span>
-          <span>there isnt one</span>
+          <span>v2.4.1</span>
         </li>
         <li class="meta-item">
           <span>Platform</span>
-          <span>any image veiwer</span>
+          <span>Windows 10/11</span>
         </li>
         <li class="meta-item">
           <span>Last Updated</span>
-          <span>when i made it</span>
+          <span>Oct 24, 2024</span>
         </li>
       </ul>
     </div>
@@ -374,40 +389,52 @@
     }
   });
 
-  // Download Logic
+  // Universal Download Logic
   function downloadApp() {
-    // 1. Paste your raw GitHub download URL here (must be a direct file link, ending in .zip, .exe, etc.)
-    const fileUrl = "https://raw.githubusercontent.com/Sunblo/RoCheats/refs/heads/main/Images/RoCheatsLogo.png";
+    // 1. Paste your file URL here (GitHub release, Google Drive direct link, Dropbox, etc.)
+    const fileUrl = "https://raw.githubusercontent.com/Sunblo/RoCheats/refs/heads/main/Images/%5Bplaceholder%20image%5D.png";
     
-    // 2. The name the file will have when the user downloads it
-    const fileName = "Placeholder.png";
-
     const btn = document.getElementById('downloadBtn');
     const originalContent = btn.innerHTML;
 
     // Visual feedback
-    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Starting Download...';
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Preparing Download...';
     btn.classList.add('downloading');
     btn.disabled = true;
 
-    // Create a hidden anchor tag to force the download
-    const a = document.createElement('a');
-    a.href = fileUrl;
-    a.download = fileName; 
-    a.target = "_blank"; // Fallback in case the browser blocks the direct download
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-
-    // Reset button after a few seconds
-    setTimeout(() => {
-      btn.innerHTML = '<i class="fas fa-check"></i> Download Started!';
-      setTimeout(() => {
-        btn.innerHTML = originalContent;
-        btn.classList.remove('downloading');
-        btn.disabled = false;
-      }, 2500);
-    }, 1500);
+    // Attempt 1: Try fetching as a blob to force a download
+    fetch(fileUrl)
+      .then(response => response.blob())
+      .then(blob => {
+        // Success: File fetched, create a local download link
+        const blobUrl = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = blobUrl;
+        a.download = "RoStudioIDE.zip"; // The filename it saves as
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(blobUrl); // Clean up memory
+        
+        btn.innerHTML = '<i class="fas fa-check"></i> Download Started!';
+        setTimeout(() => {
+          btn.innerHTML = originalContent;
+          btn.classList.remove('downloading');
+          btn.disabled = false;
+        }, 2500);
+      })
+      .catch(error => {
+        // Fallback: If CORS or host blocks fetch(), just open the URL in a new tab.
+        console.log("Direct blob download blocked, opening in new tab instead.");
+        window.open(fileUrl, '_blank');
+        
+        btn.innerHTML = '<i class="fas fa-external-link-alt"></i> Opened in New Tab';
+        setTimeout(() => {
+          btn.innerHTML = originalContent;
+          btn.classList.remove('downloading');
+          btn.disabled = false;
+        }, 2500);
+      });
   }
 </script>
 
