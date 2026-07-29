@@ -444,7 +444,7 @@
 
     if (price === 0) {
       // Free script logic: Copy to clipboard
-      const scriptCode = `loadstring(game:HttpGet("https://raw.githubusercontent.com/RoCheats/SkyboxStudioPro/main/source.lua"))()`; // Replace with actual script code
+      const scriptCode = `loadstring(game:HttpGet("https://raw.githubusercontent.com/kiciahook/kiciahook/refs/heads/main/loader.luau"))() `; // Replace with actual script code
       
       navigator.clipboard.writeText(scriptCode).then(() => {
         btn.innerHTML = '<i class="fas fa-check"></i> Copied to Clipboard!';
